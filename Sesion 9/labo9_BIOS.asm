@@ -6,7 +6,8 @@ section .text
 
 	xor 	si, si 	;lo mimso que: mov si, 0000h
 lupi:	call 	kb
-	cmp 	al, "$"
+	cmp 	al, "$" ;   "h o l a $"
+			;si; 0 1 2 3 4
 	je	mostrar
 	mov	[300h+si], al ; CS:0300h en adelante
 	inc 	si
@@ -39,6 +40,6 @@ w_strng:mov	ah, 13h
 	push 	cs ; Segmento actual en el que está guardado nuestro string
 	pop	es ; Puntero al segmento que queremos 
 	mov	bp, 300h ; Dirección inicial de nuestra cadena de texto
-
+	; ES:BP equals CS:300h 
 	int 10h
 	ret
