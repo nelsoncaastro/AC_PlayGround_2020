@@ -2,13 +2,18 @@ org 	100h
 
 section .text
 
-	call 	grafico	; Llamada a iniciar modo grafico 12h
+	call 	grafico	; Llamada a iniciar modo grafico 13h
 
-	mov 	cx, 100d ; Columna 
+	xor 	di, di
+lupi:	mov 	cx, 100d ; Columna 
+	add	cx, di	 ; Offset
 	mov	dx, 100d ; Fila
 	call 	pixel
+	inc 	di
+	cmp 	di, 100d
+	jne 	lupi
 
-	call 	kb		; Utilizamos espera de alguna tecla
+	call 	kb	 ; Utilizamos espera de alguna tecla
 
 	int 	20h
 

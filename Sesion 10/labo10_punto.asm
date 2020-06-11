@@ -2,7 +2,7 @@ org 	100h
 
 section .text
 
-	call 	grafico	; Llamada a iniciar modo grafico 12h
+	call 	grafico	; Llamada a iniciar modo grafico 13h
 
 	mov 	cx, 100d ; Columna 
 	mov	dx, 100d ; Fila
