@@ -4,7 +4,7 @@ section .text
 
 	call 	grafico	; Llamada a iniciar modo grafico 13h
 
-	xor 	di, di
+	xor 	di, di   ; mov di, 0h
 lupi:	mov 	cx, 100d ; Columna 
 	add	cx, di	 ; Offset
 	mov	dx, 100d ; Fila
