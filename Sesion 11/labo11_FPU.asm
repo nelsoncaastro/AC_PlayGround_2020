@@ -5,14 +5,18 @@ section .text
 	xor 	si, si
 	xor 	di, di
 
-	;mov 	si, 20h
-	;mov 	[si_pirata], si
-
 	mov     dx, msg
 	call    w_strng
 
 	mov     di, prueba
 	call    w_32reg
+
+	mov 	dx, nl	
+	call 	w_strng
+	mov 	dx, nl	
+	call 	w_strng
+
+	call func_y
 
 	int 	20h
 
@@ -21,28 +25,42 @@ section .text
 func_y:
 	; [?] = 20 00 00 00
 	; SI_PIRATA = 00000020h
-
 	mov 	di, word [s_sub] ; Solo para revisar el valor de s_sub 0164h
 
-	fld 	dword [si_pirata] ; 20h ST1
+	mov 	byte [si_pirata], 79d
+
+	finit
+	fld 	dword [si_pirata] ; 4Fh ST1
 	fld 	dword [pa_x]	; 50h	ST0
 	fsub 		
-	fstp	dword [s_sub] ; 80 00 00 30 = -30  ST1-ST0
+	fst		dword [s_sub] ; 80 00 00 30 = -30  ST1-ST0
+	mov		dx, msg_sub
+	call 	w_strng
+	mov 	di, s_sub
+	call	w_32reg
+	mov 	dx, nl	
+	call 	w_strng
 
-	finit 
-	fld 	dword [s_sub]
 	fld 	dword [linea_ab_m]	
 	fmul
-	fstp	dword [s_mul] ; 138.24‬
+	fst 	dword [s_mul]	
+	mov		dx, msg_mul
+	call 	w_strng
+	mov 	di, s_mul
+	call	w_32reg
+	mov 	dx, nl	
+	call 	w_strng
 
-	fld 	dword [pa_y]
+	fld 	dword [pa_y]	
 	fadd
-	fstp	dword [s_sum]
+	fst 	dword [s_sum]
+	mov		dx, msg_sum
+	call 	w_strng
+	mov 	di, s_sum
+	call	w_32reg
+	mov 	dx, nl	
+	call 	w_strng
 
-	frndint
-	fstp	dword [s_mul]
-	fstp	dword [si_pirata]
-	mov	di, word [si_pirata]
 	ret
 
 w_char: mov	ah, 02h
@@ -97,12 +115,12 @@ w_32reg:
 	div	cx
 	add 	dx, '0'
 
-	mov 	bl, dl ; El cuarto digito
+	mov 	bl, dl ; El octavo digito
 
 	mov 	dx, 0h
 	div	cx
 	add 	dl, '0' 
-	mov	bh, dl	; El tercer digito
+	mov	bh, dl	; El septimo digito
 
 	push 	bx
 
@@ -110,12 +128,12 @@ w_32reg:
 	div	cx
 	add 	dx, '0'
 
-	mov 	bl, dl ; El segundo digito
+	mov 	bl, dl ; El sexto digito
 
 	mov 	dx, 0h
 	div	cx
 	add 	dl, '0' 
-	mov	bh, dl	; El primer digito
+	mov	bh, dl	; El quinto digito
 	call 	w_char
 	mov 	dl, bl
 	call 	w_char
@@ -127,23 +145,29 @@ w_32reg:
 
 	mov 	dl, 'h'
 	call 	w_char
-	
-	ret
 
+	ret
 
 
 section .data
 
 prueba: dd 	12345678h 	; 0x78 0x56 0x34 0x12
-pa_x: 	dd	80d
+
 si_pirata: 	dd	0 	
-pa_y: 	dd 	25d
-pb_x: 	dd 	70d
-pb_y:	dd	53d
-linea_ab_m: 	dd 	-2.88
+
+pa_x: 	dd	50h ;80d
+pa_y: 	dd 	25h ;25d
+pb_x: 	dd 	46h ;70d
+pb_y:	dd	35h ;53d
+linea_ab_m: 	dd -2.88
+
+msg_sub db 	"Valor de resta: $"
 s_sub: 	dd 	0
+msg_mul db 	"Valor de multiplicacion: $"
 s_mul: 	dd 	0
+msg_sum db 	"Valor de suma: $"
 s_sum: 	dd 	0
+msg_rnd db 	"Valor de redondeo: $"
 s_rnd:	dd 	0
 
 
