@@ -5,21 +5,22 @@ section .text
 	xor 	si, si
 	xor 	di, di
 
-	;mov     dx, msg
-	;call    w_strng
+	mov     dx, msg
+	call    w_strng
 
-	;mov     di, prueba
-	;call    w_32reg
+	mov     di, prueba
+	call    w_32reg
 
-	;mov 	dx, nl	
-	;call 	w_strng
-	;mov 	dx, nl	
-	;call 	w_strng
+	mov 	dx, nl	
+	call 	w_strng
 
 	mov 	di, prueba_doble
 	call 	w_64reg
+	
+	mov 	dx, nl	
+	call 	w_strng
 
-	;call func_y
+	call func_y
 
 	int 	20h
 
@@ -56,14 +57,18 @@ func_y:
 
 	fld 	dword [pa_y]	
 	fadd
-	fst 	qword [double]
 	fst 	dword [s_sum]
+	fst 	qword [double]
+
 	mov	dx, msg_sum
 	call 	w_strng
+
 	mov 	di, s_sum
 	call	w_32reg
+
 	mov 	dx, nl	
 	call 	w_strng
+
 	mov 	di, double
 	call 	w_64reg
 
